@@ -110,6 +110,34 @@
             transform: translateY(0);
         }
 
+        .slide.cover-slide {
+            background: transparent !important;
+        }
+
+        .slide.cover-slide .dot-pattern,
+        .slide.cover-slide .dot-pattern-dark {
+            display: none;
+        }
+
+        .slide.cover-slide .single-photo-container {
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+
+        .slide.cover-slide .single-photo-container img {
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+            background: transparent;
+        }
+
         @keyframes subtleShake {
             0% { transform: translate(0, 0) rotate(0deg); }
             20% { transform: translate(-1px, 1px) rotate(-0.2deg); }
@@ -264,6 +292,9 @@
                 <button id="music-toggle-btn" class="action-btn flex items-center gap-1.5 font-ubuntu">
                     <span>🎵 Música</span>
                 </button>
+                <button id="fullscreen-toggle-btn" class="action-btn flex items-center gap-1.5 font-ubuntu" type="button">
+                    <span>⛶ Tela cheia</span>
+                </button>
             </div>
         </div>
 
@@ -285,7 +316,14 @@
 
         <div id="presentation-container">
 
-            <div class="slide active" style="background-color: var(--brand-navy);">
+            <div class="slide cover-slide active" style="background-color: transparent;">
+                <div class="dot-pattern"></div>
+                <div class="single-photo-container animate-up" style="z-index: 5;">
+                    <img src="https://imgur.com/2y5sep0" alt="Capa" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/800x800/0A2540/FFF?text=Javier'">
+                </div>
+            </div>
+
+            <div class="slide" style="background-color: var(--brand-navy);">
                 <div class="dot-pattern"></div>
                 <div class="content-safe-area animate-up flex flex-col items-center justify-center pt-6" style="max-width: 1000px; padding: 1.5rem;">
                     <h1 class="text-3xl md:text-4xl lg:text-5xl text-white font-bold tracking-tight font-ubuntu text-center mb-6">
@@ -293,7 +331,7 @@
                     </h1>
                     <div class="grid grid-cols-3 gap-4 w-full max-w-3xl">
                         <div class="overflow-hidden aspect-square flex items-center justify-center transform transition hover:scale-105 duration-300">
-                            <img src="https://i.imgur.com/09H6HJm.jpg" alt="Foto 1" class="w-full h-full object-cover rounded-xl shadow-lg border border-white/15" onerror="this.src='https://placehold.co/400x400/0A2540/FFF?text=Javier'">
+                            <img src="https://imgur.com/undefined" alt="Capa" class="w-full h-full object-cover rounded-xl shadow-lg border border-white/15" onerror="this.src='https://placehold.co/400x400/0A2540/FFF?text=Javier'">
                         </div>
                         <div class="overflow-hidden aspect-square flex items-center justify-center transform transition hover:scale-105 duration-300">
                             <img src="https://i.imgur.com/uNe7Pfg.jpg" alt="Foto 2" class="w-full h-full object-cover rounded-xl shadow-lg border border-white/15" onerror="this.src='https://placehold.co/400x400/0A2540/FFF?text=Javier'">
@@ -314,16 +352,24 @@
                 </div>
             </div>
 
-            <div class="slide" style="background-color: #FFFFFF;">
+            <div class="slide" style="background: linear-gradient(135deg, #f8f5ee 0%, #f1ebdc 45%, #e8dfc9 100%);">
                 <div class="dot-pattern-dark"></div>
-                <div class="content-safe-area animate-up" style="z-index: 5; max-width: 850px;">
-                    <div class="relative px-6">
-                        <div class="absolute -top-10 left-0 text-7xl text-blue-200 font-serif select-none pointer-events-none opacity-60">“</div>
-                        <blockquote class="font-citation text-2xl md:text-3xl lg:text-4xl text-gray-800 italic leading-relaxed mb-6 relative z-10 text-center px-4">
-                            "O Senhor te abençoe e te guarde; o Senhor faça resplandecer o seu rosto sobre ti e tenha misericórdia de ti."
-                        </blockquote>
-                        <div class="h-1 w-16 bg-blue-600 mx-auto rounded-full mb-4 opacity-80"></div>
-                        <p class="text-xs md:text-sm font-ubuntu text-gray-600 tracking-widest uppercase font-semibold text-center">— Números 6:24-25</p>
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(28,75,122,0.08),transparent_40%)]"></div>
+                <div class="content-safe-area animate-up relative z-10 max-w-4xl">
+                    <div class="mx-auto max-w-3xl px-8 py-10 md:px-12 md:py-14">
+                        <div class="mb-6 flex items-center justify-center">
+                            <div class="h-px w-16 bg-blue-700/40"></div>
+                            <div class="h-px w-16 bg-blue-700/40"></div>
+                        </div>
+                        <div class="relative">
+                            <div class="absolute -top-8 left-0 text-7xl text-blue-300/80 font-citation select-none pointer-events-none">“</div>
+                            <blockquote class="font-citation text-2xl md:text-3xl lg:text-[2.2rem] leading-relaxed text-gray-800 italic text-center px-6 md:px-10">
+                                O Senhor te abençoe e te guarde; o Senhor faça resplandecer o seu rosto sobre ti e tenha misericórdia de ti.
+                            </blockquote>
+                            <div class="absolute -bottom-7 right-0 text-7xl text-blue-300/80 font-citation select-none pointer-events-none">”</div>
+                        </div>
+                        <div class="mt-8 h-1 w-20 rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 mx-auto"></div>
+                        <p class="mt-5 text-sm md:text-base font-ubuntu uppercase tracking-[0.35em] text-gray-600 text-center font-semibold">— Números 6:24-25</p>
                     </div>
                 </div>
             </div>
@@ -406,11 +452,13 @@
         document.addEventListener('DOMContentLoaded', () => {
             const slides = document.querySelectorAll('.slide');
             const leftLogo = document.getElementById('left-logo');
+            const rightLogo = document.getElementById('right-logo');
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
             const pausePlayBtn = document.getElementById('pause-play-btn');
             const speedBtns = document.querySelectorAll('.speed-btn');
             const musicToggleBtn = document.getElementById('music-toggle-btn');
+            const fullscreenToggleBtn = document.getElementById('fullscreen-toggle-btn');
             const youtubePlayerContainer = document.getElementById('youtube-player-container');
             const youtubeUrlInput = document.getElementById('youtube-url-input');
             const applyMusicBtn = document.getElementById('apply-music-btn');
@@ -467,9 +515,15 @@
                 currentSlide = (index + slides.length) % slides.length;
                 slides[currentSlide].classList.add('active');
 
+                const isCoverSlide = slides[currentSlide].classList.contains('cover-slide');
+                leftLogo.style.display = isCoverSlide ? 'none' : 'block';
+                rightLogo.style.display = isCoverSlide ? 'none' : 'block';
+
                 // Adjust logo color if slide background is white
                 const currentBg = window.getComputedStyle(slides[currentSlide]).backgroundColor;
-                if (currentBg === 'rgb(255, 255, 255)' || currentBg.includes('255, 255, 255')) {
+                if (isCoverSlide) {
+                    leftLogo.src = "https://files.catbox.moe/ux6acp.png";
+                } else if (currentBg === 'rgb(255, 255, 255)' || currentBg.includes('255, 255, 255')) {
                     leftLogo.src = "https://files.catbox.moe/wiudbm.png"; // Dark logo version for white background
                 } else {
                     leftLogo.src = "https://files.catbox.moe/ux6acp.png"; // White logo for navy background
@@ -553,11 +607,52 @@
                 youtubeUrlInput.value = value;
             }
 
+            function updateFullscreenButton() {
+                const isFullscreen = Boolean(document.fullscreenElement || document.webkitFullscreenElement);
+                fullscreenToggleBtn.innerHTML = `<span>${isFullscreen ? '⤡' : '⛶'} ${isFullscreen ? 'Sair da tela cheia' : 'Tela cheia'}</span>`;
+            }
+
+            function toggleFullscreen() {
+                const isFullscreen = Boolean(document.fullscreenElement || document.webkitFullscreenElement);
+
+                if (isFullscreen) {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                    }
+                    return;
+                }
+
+                const target = document.documentElement;
+                if (target.requestFullscreen) {
+                    target.requestFullscreen();
+                } else if (target.webkitRequestFullscreen) {
+                    target.webkitRequestFullscreen();
+                } else if (wrapper.requestFullscreen) {
+                    wrapper.requestFullscreen();
+                } else if (wrapper.webkitRequestFullscreen) {
+                    wrapper.webkitRequestFullscreen();
+                } else {
+                    alert('Seu navegador não suporta tela cheia.');
+                }
+            }
+
             musicToggleBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 youtubePlayerContainer.classList.toggle('hidden');
                 showControls();
             });
+
+            fullscreenToggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleFullscreen();
+                showControls();
+            });
+
+            document.addEventListener('fullscreenchange', updateFullscreenButton);
+            document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
+            updateFullscreenButton();
 
             applyMusicBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
