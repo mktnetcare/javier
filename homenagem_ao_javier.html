@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Homenagem ao Javier</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --brand-navy: #0A2540;
+            --brand-blue: #1C4B7A;
+            --brand-light: #FFFFFF;
+            --transition-fade: 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #030712;
+            font-family: 'Ubuntu', 'Inter', sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .font-ubuntu {
+            font-family: 'Ubuntu', sans-serif;
+        }
+
+        .font-inter {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .font-citation {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Strict 16:9 desktop container */
+        #presentation-wrapper {
+            position: absolute;
+            width: 1280px;
+            height: 720px;
+            aspect-ratio: 16 / 9;
+            background-color: var(--brand-navy);
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+            transform-origin: center center;
+        }
+
+        #presentation-container {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity var(--transition-fade), visibility var(--transition-fade);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 0;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 10;
+        }
+
+        .dot-pattern {
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1.5px, transparent 1.5px);
+            background-size: 32px 32px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .dot-pattern-dark {
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(10, 37, 64, 0.08) 1.5px, transparent 1.5px);
+            background-size: 32px 32px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .animate-up {
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .slide.active .animate-up {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes subtleShake {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            20% { transform: translate(-1px, 1px) rotate(-0.2deg); }
+            40% { transform: translate(1px, -1px) rotate(0.2deg); }
+            60% { transform: translate(-1px, -1px) rotate(0deg); }
+            80% { transform: translate(1px, 1px) rotate(0.2deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        .slide:not(:first-child).active .single-photo-container img {
+            animation: subtleShake 4s ease-in-out infinite;
+        }
+
+        .single-photo-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+        }
+
+        .single-photo-container img {
+            max-height: 65vh;
+            max-width: 75vw;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+            border: 2px solid rgba(255,255,255,0.15);
+            background-color: #0d1b2a;
+        }
+        
+        .content-safe-area {
+            position: relative;
+            z-index: 5;
+            width: 100%;
+            max-width: 1100px;
+            padding: 2rem 3rem;
+            text-align: center;
+        }
+
+        #controls-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 100;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #controls-overlay.visible {
+            opacity: 1;
+        }
+
+        #controls-overlay .nav-btn,
+        #controls-overlay .action-btn,
+        #controls-overlay .bottom-controls {
+            pointer-events: auto;
+        }
+
+        #youtube-player-container {
+            pointer-events: auto;
+            z-index: 120;
+        }
+
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 9999px;
+            cursor: pointer;
+            pointer-events: auto;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        #prev-btn { left: 24px; }
+        #next-btn { right: 24px; }
+
+        .bottom-controls {
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: center;
+            pointer-events: auto;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 9999px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div id="presentation-wrapper">
+        <!-- Netcare Logo on Top Left -->
+        <div class="absolute top-6 left-6 z-50 flex items-center gap-3">
+            <img src="https://files.catbox.moe/ux6acp.png" alt="Logo Netcare" class="h-8 object-contain" id="left-logo">
+        </div>
+
+        <!-- Secondary Logo on Top Right -->
+        <div class="absolute top-6 right-6 z-50 flex items-center gap-3">
+            <img src="https://i.imgur.com/oy11rEN.png" alt="Logo Direita" class="h-8 object-contain" id="right-logo" onerror="this.style.display='none'">
+        </div>
+
+        <div id="controls-overlay">
+            <button id="prev-btn" class="nav-btn" aria-label="Slide Anterior">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <button id="next-btn" class="nav-btn" aria-label="Próximo Slide">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            </button>
+            <div class="bottom-controls">
+                <button id="pause-play-btn" class="action-btn font-ubuntu">Pausar</button>
+                <div class="flex items-center bg-white/15 backdrop-blur-md border border-white/25 rounded-full px-3 py-1 gap-1.5 text-white text-xs shadow-lg">
+                    <span class="font-medium mr-1 font-ubuntu">Velocidade:</span>
+                    <button class="speed-btn px-2 py-0.5 rounded transition hover:bg-white/30" data-time="5000">5s</button>
+                    <button class="speed-btn px-2 py-0.5 rounded bg-white/30 font-bold transition" data-time="10000">10s</button>
+                    <button class="speed-btn px-2 py-0.5 rounded transition hover:bg-white/30" data-time="15000">15s</button>
+                </div>
+                <button id="music-toggle-btn" class="action-btn flex items-center gap-1.5 font-ubuntu">
+                    <span>🎵 Música</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- YouTube Music Widget Overlay -->
+        <div id="youtube-player-container" class="absolute bottom-20 left-1/2 -translate-x-1/2 z-50 hidden bg-gray-900/90 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/20 shadow-2xl flex-col gap-2">
+            <div class="flex items-center justify-between gap-3">
+                <span class="text-xs text-white font-medium font-ubuntu">Trilha Sonora</span>
+                <button id="close-music" class="text-white/70 hover:text-white text-base font-bold">✕</button>
+            </div>
+            <div class="flex flex-col gap-2">
+                <input id="youtube-url-input" type="text" placeholder="Cole o link do YouTube ou o ID da música" class="w-80 max-w-[320px] rounded-full border border-white/20 bg-white/10 px-3 py-2 text-sm text-white placeholder:text-white/60 focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                <div class="flex items-center gap-2">
+                    <button id="apply-music-btn" class="rounded-full bg-blue-500/90 px-3 py-1.5 text-xs font-semibold text-white hover:bg-blue-400 transition">Aplicar</button>
+                    <button id="reset-music-btn" class="rounded-full bg-white/10 px-3 py-1.5 text-xs font-semibold text-white hover:bg-white/20 transition">Padrão</button>
+                </div>
+            </div>
+            <iframe id="yt-player" width="320" height="180" src="https://www.youtube.com/embed/5qap5aO4i9A?enablejsapi=1&autoplay=0&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="rounded"></iframe>
+        </div>
+
+        <div id="presentation-container">
+
+            <div class="slide active" style="background-color: var(--brand-navy);">
+                <div class="dot-pattern"></div>
+                <div class="content-safe-area animate-up flex flex-col items-center justify-center pt-6" style="max-width: 1000px; padding: 1.5rem;">
+                    <h1 class="text-3xl md:text-4xl lg:text-5xl text-white font-bold tracking-tight font-ubuntu text-center mb-6">
+                        Tivemos momentos incríveis com você!
+                    </h1>
+                    <div class="grid grid-cols-3 gap-4 w-full max-w-3xl">
+                        <div class="overflow-hidden aspect-square flex items-center justify-center transform transition hover:scale-105 duration-300">
+                            <img src="https://i.imgur.com/09H6HJm.jpg" alt="Foto 1" class="w-full h-full object-cover rounded-xl shadow-lg border border-white/15" onerror="this.src='https://placehold.co/400x400/0A2540/FFF?text=Javier'">
+                        </div>
+                        <div class="overflow-hidden aspect-square flex items-center justify-center transform transition hover:scale-105 duration-300">
+                            <img src="https://i.imgur.com/uNe7Pfg.jpg" alt="Foto 2" class="w-full h-full object-cover rounded-xl shadow-lg border border-white/15" onerror="this.src='https://placehold.co/400x400/0A2540/FFF?text=Javier'">
+                        </div>
+                        <div class="overflow-hidden aspect-square flex items-center justify-center transform transition hover:scale-105 duration-300">
+                            <img src="https://i.imgur.com/8spJKD1.jpg" alt="Foto 3" class="w-full h-full object-cover rounded-xl shadow-lg border border-white/15" onerror="this.src='https://placehold.co/400x400/0A2540/FFF?text=Javier'">
+                        </div>
+                        <div class="overflow-hidden aspect-square flex items-center justify-center transform transition hover:scale-105 duration-300">
+                            <img src="https://i.imgur.com/HpF1jyl.jpg" alt="Foto 4" class="w-full h-full object-cover rounded-xl shadow-lg border border-white/15" onerror="this.src='https://placehold.co/400x400/0A2540/FFF?text=Javier'">
+                        </div>
+                        <div class="overflow-hidden aspect-square flex items-center justify-center transform transition hover:scale-105 duration-300">
+                            <img src="https://i.imgur.com/VmjbD2a.jpg" alt="Foto 5" class="w-full h-full object-cover rounded-xl shadow-lg border border-white/15" onerror="this.src='https://placehold.co/400x400/0A2540/FFF?text=Javier'">
+                        </div>
+                        <div class="overflow-hidden aspect-square flex items-center justify-center transform transition hover:scale-105 duration-300">
+                            <img src="https://i.imgur.com/mazgGsE.jpg" alt="Foto 6" class="w-full h-full object-cover rounded-xl shadow-lg border border-white/15" onerror="this.src='https://placehold.co/400x400/0A2540/FFF?text=Javier'">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide" style="background-color: #FFFFFF;">
+                <div class="dot-pattern-dark"></div>
+                <div class="content-safe-area animate-up" style="z-index: 5; max-width: 850px;">
+                    <div class="relative px-6">
+                        <div class="absolute -top-10 left-0 text-7xl text-blue-200 font-serif select-none pointer-events-none opacity-60">“</div>
+                        <blockquote class="font-citation text-2xl md:text-3xl lg:text-4xl text-gray-800 italic leading-relaxed mb-6 relative z-10 text-center px-4">
+                            "O Senhor te abençoe e te guarde; o Senhor faça resplandecer o seu rosto sobre ti e tenha misericórdia de ti."
+                        </blockquote>
+                        <div class="h-1 w-16 bg-blue-600 mx-auto rounded-full mb-4 opacity-80"></div>
+                        <p class="text-xs md:text-sm font-ubuntu text-gray-600 tracking-widest uppercase font-semibold text-center">— Números 6:24-25</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide" style="background-color: var(--brand-navy);">
+                <div class="dot-pattern"></div>
+                <div class="content-safe-area animate-up" style="z-index: 5;">
+                    <h2 class="text-3xl md:text-4xl text-white mb-6 font-bold font-ubuntu leading-tight">
+                        Sentiremos muito<br><span class="italic text-blue-300 font-normal font-ubuntu">a sua falta, Javier.</span>
+                    </h2>
+                    <div class="h-1 w-20 bg-white mx-auto opacity-30 mb-6 rounded-full"></div>
+                    <p class="text-base md:text-lg text-gray-200 font-light leading-relaxed max-w-2xl mx-auto font-inter">
+                        Sua alegria contagiante, a parceria leal nos dias corridos e o companheirismo verdadeiro deixam uma marca inesquecível em cada um de nós. Somos imensamente gratos por cada risada compartilhada, por todo o apoio nos momentos de desafio e por fazer parte da nossa história com tanta dedicação e amizade genuína.
+                    </p>
+                </div>
+            </div>
+
+            <div class="slide" style="background-color: var(--brand-navy);">
+                <div class="dot-pattern"></div>
+                <div class="content-safe-area animate-up" style="z-index: 5;">
+                    <h1 class="text-3xl md:text-4xl text-white mb-6 font-bold font-ubuntu leading-tight">
+                        Obrigado por tudo,<br><span class="italic text-blue-300 font-normal font-ubuntu">Javier!</span>
+                    </h1>
+                    <div class="h-1 w-20 bg-blue-500 mx-auto mt-4 mb-6 rounded-full opacity-80"></div>
+                    <p class="text-base md:text-lg text-gray-200 font-light max-w-2xl mx-auto leading-relaxed mb-6 font-inter">
+                        Desejamos que esta nova jornada seja repleta de alegrias, novas amizades, aprendizados e grandes realizações. Sentiremos saudades, mas torcemos muito pelo seu sucesso!
+                    </p>
+                    <p class="text-base md:text-lg text-blue-200 font-medium tracking-wide font-ubuntu">
+                        Saiba que as portas estarão sempre abertas para a sua volta!
+                    </p>
+                </div>
+            </div>
+
+            <div class="slide" style="background-color: var(--brand-navy);">
+                <div class="dot-pattern"></div>
+                <div class="single-photo-container animate-up" style="z-index: 5;">
+                    <img src="https://i.imgur.com/09H6HJm.jpg" alt="Javier Foto 1" onerror="this.src='https://placehold.co/800x800/0A2540/FFF?text=Javier'">
+                </div>
+            </div>
+
+            <div class="slide" style="background-color: var(--brand-navy);">
+                <div class="dot-pattern"></div>
+                <div class="single-photo-container animate-up" style="z-index: 5;">
+                    <img src="https://i.imgur.com/uNe7Pfg.jpg" alt="Javier Foto 2" onerror="this.src='https://placehold.co/800x800/0A2540/FFF?text=Javier'">
+                </div>
+            </div>
+
+            <div class="slide" style="background-color: var(--brand-navy);">
+                <div class="dot-pattern"></div>
+                <div class="single-photo-container animate-up" style="z-index: 5;">
+                    <img src="https://i.imgur.com/8spJKD1.jpg" alt="Javier Foto 3" onerror="this.src='https://placehold.co/800x800/0A2540/FFF?text=Javier'">
+                </div>
+            </div>
+
+            <div class="slide" style="background-color: var(--brand-navy);">
+                <div class="dot-pattern"></div>
+                <div class="single-photo-container animate-up" style="z-index: 5;">
+                    <img src="https://i.imgur.com/HpF1jyl.jpg" alt="Javier Foto 4" onerror="this.src='https://placehold.co/800x800/0A2540/FFF?text=Javier'">
+                </div>
+            </div>
+
+            <div class="slide" style="background-color: var(--brand-navy);">
+                <div class="dot-pattern"></div>
+                <div class="single-photo-container animate-up" style="z-index: 5;">
+                    <img src="https://i.imgur.com/VmjbD2a.jpg" alt="Javier Foto 5" onerror="this.src='https://placehold.co/800x800/0A2540/FFF?text=Javier'">
+                </div>
+            </div>
+
+            <div class="slide" style="background-color: var(--brand-navy);">
+                <div class="dot-pattern"></div>
+                <div class="single-photo-container animate-up" style="z-index: 5;">
+                    <img src="https://i.imgur.com/mazgGsE.jpg" alt="Javier Foto 6" onerror="this.src='https://placehold.co/800x800/0A2540/FFF?text=Javier'">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            const leftLogo = document.getElementById('left-logo');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const pausePlayBtn = document.getElementById('pause-play-btn');
+            const speedBtns = document.querySelectorAll('.speed-btn');
+            const musicToggleBtn = document.getElementById('music-toggle-btn');
+            const youtubePlayerContainer = document.getElementById('youtube-player-container');
+            const youtubeUrlInput = document.getElementById('youtube-url-input');
+            const applyMusicBtn = document.getElementById('apply-music-btn');
+            const resetMusicBtn = document.getElementById('reset-music-btn');
+            const closeMusicBtn = document.getElementById('close-music');
+            const ytPlayer = document.getElementById('yt-player');
+            const controlsOverlay = document.getElementById('controls-overlay');
+            const wrapper = document.getElementById('presentation-wrapper');
+            
+            let currentSlide = 0;
+            let slideDuration = 10000;
+            let slideInterval = setInterval(nextSlide, slideDuration);
+            let isPaused = false;
+            let hideTimeout = null;
+
+            function scalePresentation() {
+                const targetWidth = 1280;
+                const targetHeight = 720;
+                const windowWidth = window.innerWidth;
+                const windowHeight = window.innerHeight;
+
+                const scaleX = windowWidth / targetWidth;
+                const scaleY = windowHeight / targetHeight;
+                const scale = Math.min(scaleX, scaleY);
+
+                wrapper.style.transform = `translate(-50%, -50%) scale(${scale})`;
+            }
+
+            wrapper.style.position = 'absolute';
+            wrapper.style.top = '50%';
+            wrapper.style.left = '50%';
+            
+            window.addEventListener('resize', scalePresentation);
+            scalePresentation();
+
+            function showControls() {
+                controlsOverlay.classList.add('visible');
+                clearTimeout(hideTimeout);
+                hideTimeout = setTimeout(() => {
+                    controlsOverlay.classList.remove('visible');
+                }, 3000);
+            }
+
+            document.addEventListener('click', () => {
+                showControls();
+            });
+
+            document.addEventListener('mousemove', () => {
+                showControls();
+            });
+
+            function updateSlide(index) {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (index + slides.length) % slides.length;
+                slides[currentSlide].classList.add('active');
+
+                // Adjust logo color if slide background is white
+                const currentBg = window.getComputedStyle(slides[currentSlide]).backgroundColor;
+                if (currentBg === 'rgb(255, 255, 255)' || currentBg.includes('255, 255, 255')) {
+                    leftLogo.src = "https://files.catbox.moe/wiudbm.png"; // Dark logo version for white background
+                } else {
+                    leftLogo.src = "https://files.catbox.moe/ux6acp.png"; // White logo for navy background
+                }
+            }
+
+            function nextSlide() {
+                updateSlide(currentSlide + 1);
+            }
+
+            function prevSlide() {
+                updateSlide(currentSlide - 1);
+            }
+
+            function resetInterval() {
+                clearInterval(slideInterval);
+                if (!isPaused) {
+                    slideInterval = setInterval(nextSlide, slideDuration);
+                }
+            }
+
+            nextBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                nextSlide();
+                resetInterval();
+                showControls();
+            });
+
+            prevBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                prevSlide();
+                resetInterval();
+                showControls();
+            });
+
+            pausePlayBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                isPaused = !isPaused;
+                if (isPaused) {
+                    clearInterval(slideInterval);
+                    pausePlayBtn.textContent = 'Retomar';
+                } else {
+                    slideInterval = setInterval(nextSlide, slideDuration);
+                    pausePlayBtn.textContent = 'Pausar';
+                }
+                showControls();
+            });
+
+            speedBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    speedBtns.forEach(b => {
+                        b.classList.remove('bg-white/30', 'font-bold');
+                    });
+                    btn.classList.add('bg-white/30', 'font-bold');
+                    slideDuration = parseInt(btn.getAttribute('data-time'));
+                    resetInterval();
+                    showControls();
+                });
+            });
+
+            function extractYouTubeVideoId(value) {
+                const trimmedValue = value.trim();
+                if (!trimmedValue) return null;
+
+                const directIdMatch = trimmedValue.match(/^[a-zA-Z0-9_-]{11}$/);
+                if (directIdMatch) return trimmedValue;
+
+                const urlMatch = trimmedValue.match(/(?:youtube\.com\/watch\?v=|youtube\.com\/embed\/|youtube\.com\/shorts\/|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+                return urlMatch ? urlMatch[1] : null;
+            }
+
+            function applyMusicVideo(value) {
+                const videoId = extractYouTubeVideoId(value);
+                if (!videoId) {
+                    alert('Cole um link válido do YouTube ou um ID com 11 caracteres.');
+                    return;
+                }
+
+                ytPlayer.src = `https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=0&rel=0`;
+                youtubeUrlInput.value = value;
+            }
+
+            musicToggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                youtubePlayerContainer.classList.toggle('hidden');
+                showControls();
+            });
+
+            applyMusicBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                applyMusicVideo(youtubeUrlInput.value);
+                showControls();
+            });
+
+            resetMusicBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                youtubeUrlInput.value = 'https://www.youtube.com/watch?v=5qap5aO4i9A';
+                applyMusicVideo(youtubeUrlInput.value);
+                showControls();
+            });
+
+            youtubeUrlInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    applyMusicVideo(youtubeUrlInput.value);
+                    showControls();
+                }
+            });
+
+            closeMusicBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                youtubePlayerContainer.classList.add('hidden');
+                showControls();
+            });
+        });
+    </script>
+</body>
+</html>
