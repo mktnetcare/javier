@@ -131,7 +131,8 @@
             height: 100%;
             max-width: 100%;
             max-height: 100%;
-            object-fit: cover;
+            object-fit: contain;
+            object-position: center;
             border: none;
             border-radius: 0;
             box-shadow: none;
@@ -265,12 +266,12 @@
 <body>
     <div id="presentation-wrapper">
         <!-- Netcare Logo on Top Left -->
-        <div class="absolute top-6 left-6 z-50 flex items-center gap-3">
+        <div class="absolute top-6 left-6 z-50 flex items-center gap-3" style="display:none;" id="left-logo-container">
             <img src="https://files.catbox.moe/ux6acp.png" alt="Logo Netcare" class="h-8 object-contain" id="left-logo">
         </div>
 
         <!-- Secondary Logo on Top Right -->
-        <div class="absolute top-6 right-6 z-50 flex items-center gap-3">
+        <div class="absolute top-6 right-6 z-50 flex items-center gap-3" style="display:none;" id="right-logo-container">
             <img src="https://i.imgur.com/oy11rEN.png" alt="Logo Direita" class="h-8 object-contain" id="right-logo" onerror="this.style.display='none'">
         </div>
 
@@ -319,7 +320,7 @@
             <div class="slide cover-slide active" style="background-color: transparent;">
                 <div class="dot-pattern"></div>
                 <div class="single-photo-container animate-up" style="z-index: 5;">
-                    <img src="https://imgur.com/2y5sep0" alt="Capa" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/800x800/0A2540/FFF?text=Javier'">
+                    <img src="https://i.imgur.com/2y5sep0.jpg" alt="Capa" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/800x800/0A2540/FFF?text=Javier'">
                 </div>
             </div>
 
@@ -331,13 +332,13 @@
                     </h1>
                     <div class="grid grid-cols-3 gap-4 w-full max-w-3xl">
                         <div class="overflow-hidden aspect-square flex items-center justify-center transform transition hover:scale-105 duration-300">
-                            <img src="https://imgur.com/undefined" alt="Capa" class="w-full h-full object-cover rounded-xl shadow-lg border border-white/15" onerror="this.src='https://placehold.co/400x400/0A2540/FFF?text=Javier'">
+                            <img src="https://i.imgur.com/09H6HJm.jpg" alt="Capa" class="w-full h-full object-cover rounded-xl shadow-lg border border-white/15" onerror="this.src='https://placehold.co/400x400/0A2540/FFF?text=Javier'">
                         </div>
                         <div class="overflow-hidden aspect-square flex items-center justify-center transform transition hover:scale-105 duration-300">
                             <img src="https://i.imgur.com/uNe7Pfg.jpg" alt="Foto 2" class="w-full h-full object-cover rounded-xl shadow-lg border border-white/15" onerror="this.src='https://placehold.co/400x400/0A2540/FFF?text=Javier'">
                         </div>
                         <div class="overflow-hidden aspect-square flex items-center justify-center transform transition hover:scale-105 duration-300">
-                            <img src="https://i.imgur.com/8spJKD1.jpg" alt="Foto 3" class="w-full h-full object-cover rounded-xl shadow-lg border border-white/15" onerror="this.src='https://placehold.co/400x400/0A2540/FFF?text=Javier'">
+                            <img src="https://imgur.com/ghfBpq4.jpg" alt="Foto 3" class="w-full h-full object-cover rounded-xl shadow-lg border border-white/15" onerror="this.src='https://placehold.co/400x400/0A2540/FFF?text=Javier'">
                         </div>
                         <div class="overflow-hidden aspect-square flex items-center justify-center transform transition hover:scale-105 duration-300">
                             <img src="https://i.imgur.com/HpF1jyl.jpg" alt="Foto 4" class="w-full h-full object-cover rounded-xl shadow-lg border border-white/15" onerror="this.src='https://placehold.co/400x400/0A2540/FFF?text=Javier'">
@@ -370,6 +371,28 @@
                         </div>
                         <div class="mt-8 h-1 w-20 rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 mx-auto"></div>
                         <p class="mt-5 text-sm md:text-base font-ubuntu uppercase tracking-[0.35em] text-gray-600 text-center font-semibold">— Números 6:24-25</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide" style="background: linear-gradient(135deg, #f8f5ee 0%, #f1ebdc 45%, #e8dfc9 100%);">
+                <div class="dot-pattern-dark"></div>
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(28,75,122,0.08),transparent_40%)]"></div>
+                <div class="content-safe-area animate-up relative z-10 max-w-4xl">
+                    <div class="mx-auto max-w-3xl px-8 py-10 md:px-12 md:py-14">
+                        <div class="mb-6 flex items-center justify-center">
+                            <div class="h-px w-16 bg-blue-700/40"></div>
+                            <div class="h-px w-16 bg-blue-700/40"></div>
+                        </div>
+                        <div class="relative">
+                            <div class="absolute -top-8 left-0 text-7xl text-blue-300/80 font-citation select-none pointer-events-none">“</div>
+                            <blockquote class="font-citation text-2xl md:text-3xl lg:text-[2.2rem] leading-relaxed text-gray-800 italic text-center px-6 md:px-10">
+                                Meus irmãos, considerem motivo de grande alegria o fato de passarem por diversas provações, pois vocês sabem que a prova da sua fé produz perseverança. E a perseverança deve ter ação completa, a fim de que vocês sejam maduros e íntegros, sem que lhes falte coisa alguma.
+                            </blockquote>
+                            <div class="absolute -bottom-7 right-0 text-7xl text-blue-300/80 font-citation select-none pointer-events-none">”</div>
+                        </div>
+                        <div class="mt-8 h-1 w-20 rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 mx-auto"></div>
+                        <p class="mt-5 text-sm md:text-base font-ubuntu uppercase tracking-[0.35em] text-gray-600 text-center font-semibold">— Tiago 1:2–4</p>
                     </div>
                 </div>
             </div>
@@ -420,7 +443,7 @@
             <div class="slide" style="background-color: var(--brand-navy);">
                 <div class="dot-pattern"></div>
                 <div class="single-photo-container animate-up" style="z-index: 5;">
-                    <img src="https://i.imgur.com/8spJKD1.jpg" alt="Javier Foto 3" onerror="this.src='https://placehold.co/800x800/0A2540/FFF?text=Javier'">
+                    <img src="https://imgur.com/ghfBpq4.jpg" alt="Javier Foto 3" onerror="this.src='https://placehold.co/800x800/0A2540/FFF?text=Javier'">
                 </div>
             </div>
 
@@ -516,8 +539,8 @@
                 slides[currentSlide].classList.add('active');
 
                 const isCoverSlide = slides[currentSlide].classList.contains('cover-slide');
-                leftLogo.style.display = isCoverSlide ? 'none' : 'block';
-                rightLogo.style.display = isCoverSlide ? 'none' : 'block';
+                document.getElementById('left-logo-container').style.display = isCoverSlide ? 'none' : 'flex';
+                document.getElementById('right-logo-container').style.display = isCoverSlide ? 'none' : 'flex';
 
                 // Adjust logo color if slide background is white
                 const currentBg = window.getComputedStyle(slides[currentSlide]).backgroundColor;
